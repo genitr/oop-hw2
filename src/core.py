@@ -9,7 +9,7 @@ def overage_grade(grades: dict) -> float:
         count += len(value)
     return summary / count
 
-def group_overage_grade(group: list, course: str) -> int:
+def group_overage_grade(course: str, *group) -> float:
     """Подсчёт средней оченки на курсе среди всех участников"""
     count, summary = 0, 0
     for member in group:
@@ -17,9 +17,13 @@ def group_overage_grade(group: list, course: str) -> int:
             if key == course:
                 for i in value:
                     summary += i
-                amt = len(value)
-        count += amt
-    return summary / count
+                count += len(value)
+    return round(summary / count, 1)
+
+def add_courses(instance_course, *courses) -> None:
+    """Добавление курсов"""
+    for value in courses:
+        instance_course.append(value)
 
 
 class Student:
@@ -54,7 +58,7 @@ class Student:
         f"""
         Имя: {self.name}
         Фамилия: {self.surname}
-        Средняя оценка за домашние задания: {overage_grade(self.grades)}
+        Средняя оценка за домашние задания: {round(overage_grade(self.grades), 1)}
         Курсы в процессе изучения: {self.courses_in_progress}
         Завершенные курсы: {self.finished_courses}
         """)
@@ -84,7 +88,7 @@ class Lecturer(Mentor):
         f"""
         Имя: {self.name}
         Фамилия: {self.surname}
-        Средняя оценка за лекции: {overage_grade(self.grades)}
+        Средняя оценка за лекции: {round(overage_grade(self.grades), 1)}
         """)
 
     def __eq__(self, value: object) -> bool:
