@@ -1,4 +1,27 @@
 """Модуль содержит оснвную логику программы"""
+
+def overage_grade(grades: dict) -> float:
+    """Получение средней оценки"""
+    count, summary = 0, 0
+    for _, value in grades.items():
+        for i in value:
+            summary += i
+        count += len(value)
+    return summary / count
+
+def group_overage_grade(group: list, course: str) -> int:
+    """Подсчёт средней оченки на курсе среди всех участников"""
+    count, summary = 0, 0
+    for member in group:
+        for key, value in member.grades.items():
+            if key == course:
+                for i in value:
+                    summary += i
+                amt = len(value)
+        count += amt
+    return summary / count
+
+
 class Student:
     """Класс студента"""
     def __init__(self, name: str, surname: str, gender: str) -> None:
@@ -25,6 +48,21 @@ class Student:
         else:
             return 'Ошибка'
 
+    def __str__(self) -> str:
+        """Перегрузка метода"""
+        return (
+        f"""
+        Имя: {self.name}
+        Фамилия: {self.surname}
+        Средняя оценка за домашние задания: {overage_grade(self.grades)}
+        Курсы в процессе изучения: {self.courses_in_progress}
+        Завершенные курсы: {self.finished_courses}
+        """)
+
+    def __eq__(self, value: object) -> bool:
+        if isinstance(value, Student):
+            return overage_grade(self.grades) == overage_grade(value.grades)
+
 
 class Mentor:
     """Класс преподователя"""
@@ -39,6 +77,19 @@ class Lecturer(Mentor):
     def __init__(self, name: str, surname: str) -> None:
         super().__init__(name, surname)
         self.grades = {}
+
+    def __str__(self) -> str:
+        """Перегрузка метода"""
+        return (
+        f"""
+        Имя: {self.name}
+        Фамилия: {self.surname}
+        Средняя оценка за лекции: {overage_grade(self.grades)}
+        """)
+
+    def __eq__(self, value: object) -> bool:
+        if isinstance(value, Lecturer):
+            return overage_grade(self.grades) == overage_grade(value.grades)
 
 
 class Reviewer(Mentor):
@@ -60,3 +111,11 @@ class Reviewer(Mentor):
                 return 'Недопустимая оценка! Используйте цифры от 1 до 10.'
         else:
             return 'Ошибка'
+
+    def __str__(self) -> str:
+        """Перегрузка метода"""
+        return (
+        f"""
+        Имя: {self.name}
+        Фамилия: {self.surname}
+        """)
