@@ -32,3 +32,9 @@ class Mentor:
                 return 'Недопустимая оценка! Используйте цифры от 1 до 10.'
         else:
             return 'Ошибка'
+
+class Lecturer(Mentor):
+    """Класс лекторов"""
+
+class Reviewer(Mentor):
+    """Класс проверяющих экспертов"""
